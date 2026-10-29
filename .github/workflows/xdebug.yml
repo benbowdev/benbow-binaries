@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Andrea Casali
+#
+# Builds xdebug.so for every PHP version pinned in Covo's manifest, checks
+# each one against the exact static-php-cli binary Covo runs, and (when
+# asked) publishes them with their SHA-256 as a GitHub release. Covo pins
+# those hashes in its embedded manifest.
+#
+# No third-party actions: only the runner's shell and the gh CLI.
+name: xdebug
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Publish the files as release xdebug-<version>
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # only used by the release step
+
+env:
+  XDEBUG_VERSION: 3.5.3
+  # Same on xdebug.org (published hash) and pecl.php.net.
+  XDEBUG_SHA256: f073de91bea046106abf4d6071c963ea71e58571df6ce58948ceca89d121cb2d
+
+jobs:
+  build:
+    runs-on: macos-15 # arm64
+    timeout-minutes: 45
+    steps:
+      - name: Fetch build script
+        run: |
+          curl -fsSL -o build.sh "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/xdebug/build.sh"
+          chmod +x build.sh
+
+      - name: Install autoconf (runner only, needed by phpize)
+        run: brew install autoconf
+
+      # <php version> <php.net tar.xz sha256> <bulk php-fpm sha256 from the manifest>
+      - name: PHP 8.4.23
+        run: ./build.sh 8.4.23 1ab9f52008414e43bb2427ffa288eff2a4de39e1a830f957e800ba368d887a72 1a417db44f0eb0b40a9f8cd862f24ecfabdea87f85863f30d218c4876bb688ef out
+
+      - name: PHP 8.2.32
+        run: ./build.sh 8.2.32 e02aa173c236c12791696254d607da680e6d5516f8f5c2339642de7c4f944bd2 dadddf9b6528f7344ba1f4cdc220bc7e26d2c8402d018f743fe0316d06e4ba77 out
+
+      - name: Checksums
+        run: |
+          cd out
+          cat *.sha256 > SHA256SUMS
+          rm *.sha256
+          cat SHA256SUMS
+
+      - name: Release
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Assets are never replaced: Covo pins their hashes. A new PHP or
+          # Xdebug version gets a new tag.
+          tag="xdebug-$XDEBUG_VERSION-$(date -u +%Y%m%d)"
+          gh release create "$tag" out/* --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "Xdebug $XDEBUG_VERSION for Covo" \
+            --notes "xdebug.so $XDEBUG_VERSION built by .github/workflows/xdebug.yml (run ${{ github.run_id }}) for the static-php-cli PHP-FPM builds pinned in Covo, macOS arm64. Checksums in SHA256SUMS."
