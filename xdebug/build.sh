@@ -22,6 +22,7 @@ arch=$(uname -m)
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 mkdir -p "$out"
+out=$(cd "$out" && pwd) # the script changes directory below
 
 fetch() { # url sha256 file
 	curl -fsSL --retry 3 -o "$3" "$1"
