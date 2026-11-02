@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Andrea Casali
+#
+# Every day: look for new upstream versions of the components Covo runs,
+# verify them against their upstream checksums, add them to Covo's manifest
+# and sign it. Covo only accepts the manifest with this signature (its
+# public key is compiled into Covo) and only if it is newer than the one it
+# has; entries are only ever added.
+#
+# No third-party actions: only the runner's shell, git and Go.
+name: manifest
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write # commit manifest/manifest.json and its signature
+
+concurrency:
+  group: manifest
+  cancel-in-progress: false
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: git clone --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" repo
+
+      - name: Update and sign
+        working-directory: repo/manifest
+        env:
+          COVO_MANIFEST_KEY: ${{ secrets.COVO_MANIFEST_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GOTOOLCHAIN: auto
+        run: go run . -sign
+
+      - name: Publish
+        working-directory: repo
+        run: |
+          git add manifest/manifest.json manifest/manifest.json.sig
+          if git diff --cached --quiet; then
+            echo "nothing new"
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "chore: update the signed manifest (run ${{ github.run_id }})"
+          git push
