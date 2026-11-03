@@ -39,6 +39,13 @@ done
 # lib/postgresql relative to its own location already.
 cd "$prefix"
 rm -rf include lib/pkgconfig lib/*.a
+# Plain files only (Covo's installer refuses unlisted symbolic links):
+# libpq.dylib -> libpq.5.dylib -> libpq.5.18.dylib become copies.
+find bin lib share -type l | while read -r link; do
+	target=$(realpath "$link")
+	rm "$link"
+	cp "$target" "$link"
+done
 for f in bin/* lib/*.dylib lib/postgresql/*.dylib; do
 	[ -f "$f" ] && [ ! -L "$f" ] || continue
 	chmod u+w "$f"
@@ -53,6 +60,7 @@ done
 if otool -L bin/* lib/*.dylib lib/postgresql/*.dylib | grep -E "^\s+/" | grep -vE "^\s+/(usr/lib|System)/"; then
 	echo "linked outside macOS"; exit 1
 fi
+if [ -n "$(find . -type l)" ]; then echo "symbolic links left"; exit 1; fi
 
 # Smoke test from another place, as Covo will run it.
 moved="$work/moved/postgres"
