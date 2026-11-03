@@ -487,6 +487,17 @@
       "files": [
         "composer.phar"
       ]
+    },
+    {
+      "component": "adminer-full",
+      "version": "6.2.0",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/vrana/adminer/releases/download/v6.2.0/adminer-6.2.0.php",
+      "sha256": "9047c00dfc8258c6046c6720d7d201eaa0ca016fa0fc554bf0c4c137306e1c16",
+      "files": [
+        "adminer.php"
+      ]
     }
   ]
 }
