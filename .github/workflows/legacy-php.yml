@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Andrea Casali
+#
+# Builds self-contained PHP 5.6 to 7.4 (FPM and CLI) for Covo from
+# shivammathur/php's Homebrew builds, which carry security fixes backported
+# after these versions' end of life. See legacy-php/build.sh. When asked,
+# publishes them with their SHA-256 as a GitHub release; Covo pins those
+# hashes in its manifest. Apple Silicon only, macOS 15 or later.
+#
+# No third-party actions: only the runner's shell, Homebrew and the gh CLI.
+# Homebrew is used on the GitHub runner only, never on a user's Mac.
+name: legacy-php
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Publish the files as release legacy-php-<date>
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # only used by the release step
+
+jobs:
+  build:
+    runs-on: macos-15 # arm64
+    timeout-minutes: 150
+    steps:
+      - name: Fetch build script
+        run: |
+          curl -fsSL -o build.sh "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/legacy-php/build.sh"
+          chmod +x build.sh
+
+      - name: PHP 5.6
+        run: ./build.sh 5.6 out
+      - name: PHP 7.0
+        run: ./build.sh 7.0 out
+      - name: PHP 7.1
+        run: ./build.sh 7.1 out
+      - name: PHP 7.2
+        run: ./build.sh 7.2 out
+      - name: PHP 7.3
+        run: ./build.sh 7.3 out
+      - name: PHP 7.4
+        run: ./build.sh 7.4 out
+
+      - name: Checksums
+        run: |
+          cd out
+          cat *.sha256 > SHA256SUMS
+          rm *.sha256
+          cat SHA256SUMS
+
+      - name: Release
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Assets are never replaced: Covo pins their hashes.
+          tag="legacy-php-$(date -u +%Y%m%d)-${{ github.run_number }}"
+          gh release create "$tag" out/* --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "PHP 5.6–7.4 for Covo (end of life)" \
+            --notes "Self-contained PHP-FPM and CLI 5.6–7.4 for macOS arm64 (macOS 15+), from shivammathur/php's builds with backported security fixes, bundled by legacy-php/build.sh (run ${{ github.run_id }}). These versions are past their end of life: only for running old code locally. Checksums in SHA256SUMS."
