@@ -1,0 +1,282 @@
+{
+  "serial": 2026110300,
+  "artifacts": [
+    {
+      "component": "php",
+      "version": "8.4.23",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.4.23-fpm-macos-aarch64.tar.gz",
+      "sha256": "1a417db44f0eb0b40a9f8cd862f24ecfabdea87f85863f30d218c4876bb688ef",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.4.23",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.4.23-fpm-macos-x86_64.tar.gz",
+      "sha256": "67bbb7f2b2543d45c8a4ab0e4759fbd956530e87fba47a00505c06f09c9b9950",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.2.32",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.2.32-fpm-macos-aarch64.tar.gz",
+      "sha256": "dadddf9b6528f7344ba1f4cdc220bc7e26d2c8402d018f743fe0316d06e4ba77",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.2.32",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.2.32-fpm-macos-x86_64.tar.gz",
+      "sha256": "7d7f21caa31670fa7198bd21fd5fb6178ecedf2a8b90ef59b2af539587fa0dd7",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.1.34",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.1.34-fpm-macos-aarch64.tar.gz",
+      "sha256": "c5faad9eac5ce9753c30a17fb2a2023dcf72e5b367e0ac76b81d006647ea0e52",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.1.34",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.1.34-fpm-macos-x86_64.tar.gz",
+      "sha256": "eab87df298d83c8182f296e3f56ac4025cdb2a74baa4b6587d27ea39ac31b5e6",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "caddy",
+      "version": "2.11.7",
+      "arch": "arm64",
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_mac_arm64.tar.gz",
+      "sha256": "cda3030e5d5b13eb9f0b6fb541037f633bddd958c070c5f561d7a5cccb581665",
+      "sha512": "68f592df8f0ec058fbdb9b137b64e9a0aa792d28c06e1e3b9ec12d0e7fb371683a54e73ef6d8e6d0dd70dc6b941a5b5d5b73faedd3f89de119ad2eb78bdc668e",
+      "files": [
+        "caddy"
+      ]
+    },
+    {
+      "component": "caddy",
+      "version": "2.11.7",
+      "arch": "amd64",
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_mac_amd64.tar.gz",
+      "sha256": "110c53e5c093e4cfce6eda787f94f23bef913c309f620fab26b4f678031841ad",
+      "sha512": "147886811fa2320a8881c6116dc8cc3f0562e2f686509ccc60f55cf85dfd5ea78e9f5f770c75da13bf124a2536b72e887b975fefd58706de3dafb57483610e70",
+      "files": [
+        "caddy"
+      ]
+    },
+    {
+      "component": "mysql",
+      "version": "8.4.13",
+      "arch": "arm64",
+      "url": "https://cdn.mysql.com/Downloads/MySQL-8.4/mysql-8.4.13-macos15-arm64.tar.gz",
+      "sha256": "f324f8950e24d4147470bbc6a6ef0b90ef93b91d3fc74154b3d2ba085b44912a",
+      "md5": "73926da59774274b5cdfe78cd2150840",
+      "strip": "mysql-8.4.13-macos15-arm64",
+      "files": [
+        "bin/mysqld",
+        "bin/mysql",
+        "bin/mysqladmin",
+        "bin/mysqldump",
+        "bin/libprotobuf-lite.24.4.0.dylib",
+        "lib/libssl.3.dylib",
+        "lib/libcrypto.3.dylib",
+        "lib/libprotobuf-lite.24.4.0.dylib",
+        "lib/private/",
+        "share/english/",
+        "share/charsets/"
+      ]
+    },
+    {
+      "component": "xdebug",
+      "version": "3.5.3",
+      "arch": "arm64",
+      "for": "8.4.23",
+      "format": "file",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/xdebug-3.5.3-20261029/xdebug-3.5.3-php-8.4.23-macos-arm64.so",
+      "sha256": "195e3427c3f352cfcaff60c2420f7b2fd0f0ff6973e65c1d017a11183d545e9b",
+      "files": [
+        "xdebug.so"
+      ]
+    },
+    {
+      "component": "xdebug",
+      "version": "3.5.3",
+      "arch": "arm64",
+      "for": "8.2.32",
+      "format": "file",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/xdebug-3.5.3-20261029/xdebug-3.5.3-php-8.2.32-macos-arm64.so",
+      "sha256": "00a9f41883c99f3cb287e62c3fb5e4433cf5975c173a3f448b9577cd3881c13b",
+      "files": [
+        "xdebug.so"
+      ]
+    },
+    {
+      "component": "cabundle",
+      "version": "2026-10-20",
+      "arch": "all",
+      "format": "file",
+      "url": "https://curl.se/ca/cacert-2026-10-20.pem",
+      "sha256": "796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe",
+      "files": [
+        "cacert.pem"
+      ]
+    },
+    {
+      "component": "adminer",
+      "version": "6.2.0",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/vrana/adminer/releases/download/v6.2.0/adminer-6.2.0-mysql.php",
+      "sha256": "7492bf2b158fee5b7ddc9e13255322c4601b1f51b797896e303882626bf1e5af",
+      "files": [
+        "adminer.php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.4.23",
+      "arch": "arm64",
+      "for": "8.4.23",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.4.23-cli-macos-aarch64.tar.gz",
+      "sha256": "4a5dca6df0211f7fb21425cf1c867968b2dfb7c079f98cf37770c5728e0bf709",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.4.23",
+      "arch": "amd64",
+      "for": "8.4.23",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.4.23-cli-macos-x86_64.tar.gz",
+      "sha256": "be88a71134d43e8800946f8372da931ee1796c400a1fb4cf2afd718644251ffc",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.2.32",
+      "arch": "arm64",
+      "for": "8.2.32",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.2.32-cli-macos-aarch64.tar.gz",
+      "sha256": "3c1c359fe943aaaeb1168933b8e4b1597120c106d33bd66395fac403b6ab3ace",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.2.32",
+      "arch": "amd64",
+      "for": "8.2.32",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.2.32-cli-macos-x86_64.tar.gz",
+      "sha256": "6af04840b043391716ec15020d14147bae4aadcdf3608e8ddbfcf46558f82257",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.1.34",
+      "arch": "arm64",
+      "for": "8.1.34",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.1.34-cli-macos-aarch64.tar.gz",
+      "sha256": "b721271659d6e3448c29c0dc5755ffc4b8a1498c4709e1aba6602cfb584a84e4",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.1.34",
+      "arch": "amd64",
+      "for": "8.1.34",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.1.34-cli-macos-x86_64.tar.gz",
+      "sha256": "5fe69256365f96a270e34208ec574be7012c8c08a23bdf52948d0d16d4d8ec6a",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "wpcli",
+      "version": "2.12.0",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar",
+      "sha256": "ce34ddd838f7351d6759068d09793f26755463b4a4610a5a5c0a97b68220d85c",
+      "sha512": "be928f6b8ca1e8dfb9d2f4b75a13aa4aee0896f8a9a0a1c45cd5d2c98605e6172e6d014dda2e27f88c98befc16c040cbb2bd1bfa121510ea5cdf5f6a30fe8832",
+      "files": [
+        "wp-cli.phar"
+      ]
+    },
+    {
+      "component": "wordpress",
+      "version": "7.1.4",
+      "arch": "all",
+      "url": "https://wordpress.org/wordpress-7.1.4.tar.gz",
+      "sha256": "881e53a4681ff2cd911651b11cccdede5ae477ddf0765af5d6a1a8b219a1d835",
+      "strip": "wordpress",
+      "files": [
+        "index.php",
+        "license.txt",
+        "readme.html",
+        "wp-activate.php",
+        "wp-blog-header.php",
+        "wp-comments-post.php",
+        "wp-config-sample.php",
+        "wp-cron.php",
+        "wp-links-opml.php",
+        "wp-load.php",
+        "wp-login.php",
+        "wp-mail.php",
+        "wp-settings.php",
+        "wp-signup.php",
+        "wp-trackback.php",
+        "xmlrpc.php",
+        "wp-admin/",
+        "wp-content/",
+        "wp-includes/"
+      ]
+    },
+    {
+      "component": "mailpit",
+      "version": "1.33.0",
+      "arch": "arm64",
+      "url": "https://github.com/axllent/mailpit/releases/download/v1.33.0/mailpit-darwin-arm64.tar.gz",
+      "sha256": "0c4abbf289c6d8ee3c11adc2f93d9a1b45084e25104e19a0d9b06e847e98e0fb",
+      "files": [
+        "mailpit"
+      ]
+    },
+    {
+      "component": "mailpit",
+      "version": "1.33.0",
+      "arch": "amd64",
+      "url": "https://github.com/axllent/mailpit/releases/download/v1.33.0/mailpit-darwin-amd64.tar.gz",
+      "sha256": "6f07a68ba48fc569ca4a2bff7871377f71dc4b5c24849fa25da17740989936e4",
+      "files": [
+        "mailpit"
+      ]
+    }
+  ]
+}
