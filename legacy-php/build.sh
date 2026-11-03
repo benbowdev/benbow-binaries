@@ -6,8 +6,11 @@
 # (5.6 to 7.4, with security fixes backported by shivammathur/php-src-backports)
 # into two self-contained archives for Covo, like static-php-cli's:
 #
-#   php-<version>-fpm-macos-aarch64.tar.gz   php-fpm + lib/
-#   php-<version>-cli-macos-aarch64.tar.gz   php     + lib/
+#   php-<version>-fpm-macos-aarch64.tar.gz   php-fpm + lib/ + ext/
+#   php-<version>-cli-macos-aarch64.tar.gz   php     + lib/ + ext/
+#
+# ext/ holds the extensions built as shared objects (intl in 7.4, opcache):
+# Covo loads every .so in it from its php.ini.
 #
 # Every library the binary needs from Homebrew is copied into lib/ and
 # relinked to @executable_path/lib, then everything is ad-hoc signed. The
@@ -60,9 +63,17 @@ for kind in fpm cli; do
 	if [ "$kind" = fpm ]; then bin="$dir/php-fpm"; cp "$prefix/sbin/php-fpm" "$bin"; else bin="$dir/php"; cp "$prefix/bin/php" "$bin"; fi
 	chmod u+w "$bin"
 	relink "$bin" "$dir/lib" "$prefix/bin"
-	for f in "$bin" "$dir"/lib/*; do codesign --force --sign - "$f" 2>/dev/null; done
-	if otool -L "$bin" "$dir"/lib/* | grep -q "$brew_root"; then
-		echo "still linked to Homebrew:"; otool -L "$bin" "$dir"/lib/* | grep "$brew_root"; exit 1
+	mkdir -p "$dir/ext"
+	extdir=$("$prefix/bin/php-config" --extension-dir)
+	for so in "$extdir"/*.so; do
+		[ -e "$so" ] || continue
+		cp "$so" "$dir/ext/"
+		chmod u+w "$dir/ext/$(basename "$so")"
+		relink "$dir/ext/$(basename "$so")" "$dir/lib" "$extdir"
+	done
+	for f in "$bin" "$dir"/lib/* "$dir"/ext/*; do [ -e "$f" ] && codesign --force --sign - "$f" 2>/dev/null; done
+	if otool -L "$bin" "$dir"/lib/* "$dir"/ext/* 2>/dev/null | grep -q "$brew_root"; then
+		echo "still linked to Homebrew:"; otool -L "$bin" "$dir"/lib/* "$dir"/ext/* | grep "$brew_root"; exit 1
 	fi
 done
 
@@ -71,12 +82,19 @@ sudo mv "$brew_root" "$brew_root.off"
 trap 'sudo mv "$brew_root.off" "$brew_root"' EXIT
 "$work/cli/php" -n -v | head -1 | grep -q "^PHP $version " || { echo "php -v failed"; exit 1; }
 "$work/fpm/php-fpm" -n -v | head -1 | grep -q "^PHP $version " || { echo "php-fpm -v failed"; exit 1; }
-mods=$("$work/cli/php" -n -m)
+# Load the shared extensions the way Covo's php.ini does.
+load=(-n -d "extension_dir=$work/cli/ext")
+for so in "$work"/cli/ext/*.so; do
+	[ -e "$so" ] || continue
+	n=$(basename "$so" .so)
+	if [ "$n" = opcache ]; then load+=(-d "zend_extension=$so"); else load+=(-d "extension=$n.so"); fi
+done
+mods=$("$work/cli/php" "${load[@]}" -m)
 for m in curl openssl mysqli pdo_mysql mbstring gd zip intl xml json; do
 	grep -qix "$m" <<<"$mods" || { echo "PHP $version lacks $m"; exit 1; }
 done
-"$work/cli/php" -n -r 'exit(strlen(hash("sha256", "covo")) === 64 && openssl_random_pseudo_bytes(8) !== false ? 0 : 1);'
-echo "PHP $version runs without Homebrew; modules: $(echo $mods | tr '\n' ' ')"
+"$work/cli/php" "${load[@]}" -r 'exit(strlen(hash("sha256", "covo")) === 64 && openssl_random_pseudo_bytes(8) !== false ? 0 : 1);'
+echo "PHP $version runs without Homebrew; shared: $(ls "$work/cli/ext" | tr '\n' ' '); modules: $(echo $mods | tr '\n' ' ')"
 sudo mv "$brew_root.off" "$brew_root"
 trap - EXIT
 
@@ -84,7 +102,7 @@ for kind in fpm cli; do
 	name="php-$version-$kind-macos-aarch64.tar.gz"
 	# Fixed owner and dates: the archive depends only on its files.
 	bin=php; [ "$kind" = fpm ] && bin=php-fpm
-	tar -C "$work/$kind" --uid 0 --gid 0 --uname root --gname wheel -czf "$out/$name" "$bin" lib
+	tar -C "$work/$kind" --uid 0 --gid 0 --uname root --gname wheel -czf "$out/$name" "$bin" lib ext
 	(cd "$out" && shasum -a 256 "$name" >"$name.sha256")
 done
 ls -l "$out"
