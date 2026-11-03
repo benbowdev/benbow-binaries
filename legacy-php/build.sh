@@ -64,13 +64,12 @@ for kind in fpm cli; do
 	chmod u+w "$bin"
 	relink "$bin" "$dir/lib" "$prefix/bin"
 	mkdir -p "$dir/ext"
-	extdir=$("$prefix/bin/php-config" --extension-dir)
-	for so in "$extdir"/*.so; do
-		[ -e "$so" ] || continue
+	# The formula installs shared extensions under lib/php/<api> in its keg.
+	while IFS= read -r so; do
 		cp "$so" "$dir/ext/"
 		chmod u+w "$dir/ext/$(basename "$so")"
-		relink "$dir/ext/$(basename "$so")" "$dir/lib" "$extdir"
-	done
+		relink "$dir/ext/$(basename "$so")" "$dir/lib" "$(dirname "$so")"
+	done < <(find "$(realpath "$prefix")/lib/php" -name '*.so' -type f)
 	for f in "$bin" "$dir"/lib/* "$dir"/ext/*; do [ -e "$f" ] && codesign --force --sign - "$f" 2>/dev/null; done
 	if otool -L "$bin" "$dir"/lib/* "$dir"/ext/* 2>/dev/null | grep -q "$brew_root"; then
 		echo "still linked to Homebrew:"; otool -L "$bin" "$dir"/lib/* "$dir"/ext/* | grep "$brew_root"; exit 1
