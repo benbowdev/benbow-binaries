@@ -403,6 +403,68 @@
       "files": [
         "php-fpm"
       ]
+    },
+    {
+      "component": "phpcs",
+      "version": "4.0.4",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/4.0.4/phpcs.phar",
+      "sha256": "4b010cd21d8bc8a17e2504792e3c77ef8259126f24caf7eafe7eddef1fa871e9",
+      "files": [
+        "phpcs.phar"
+      ]
+    },
+    {
+      "component": "phpcompat",
+      "version": "10.0.0-alpha2",
+      "arch": "all",
+      "url": "https://github.com/PHPCompatibility/PHPCompatibility/archive/refs/tags/10.0.0-alpha2.tar.gz",
+      "sha256": "9dc1c069dcb926ac2b948cc79dfdc152df09bf616ef40b754c25e5d3131c40b6",
+      "strip": "PHPCompatibility-10.0.0-alpha2",
+      "files": [
+        "PHPCompatibility/",
+        "PHPCSAliases.php",
+        "LICENSE"
+      ]
+    },
+    {
+      "component": "phpcsutils",
+      "version": "1.2.3",
+      "arch": "all",
+      "url": "https://github.com/PHPCSStandards/PHPCSUtils/archive/refs/tags/1.2.3.tar.gz",
+      "sha256": "1bd2198fefb8e9081ce35332127aca50f01cd4106d6f7f6bd28c0d507041d6c9",
+      "strip": "PHPCSUtils-1.2.3",
+      "files": [
+        "PHPCSUtils/",
+        "phpcsutils-autoload.php",
+        "LICENSE"
+      ]
+    },
+    {
+      "component": "phpcompat-paragonie",
+      "version": "2.0.0-alpha2",
+      "arch": "all",
+      "url": "https://github.com/PHPCompatibility/PHPCompatibilityParagonie/archive/refs/tags/2.0.0-alpha2.tar.gz",
+      "sha256": "93ff1cb1b7c9ec47f9e87465be8c80fa075a51f95161241b9c0e8f9bfa00ec16",
+      "strip": "PHPCompatibilityParagonie-2.0.0-alpha2",
+      "files": [
+        "PHPCompatibilityParagonieRandomCompat/",
+        "PHPCompatibilityParagonieSodiumCompat/",
+        "LICENSE"
+      ]
+    },
+    {
+      "component": "phpcompat-wp",
+      "version": "3.0.0-alpha2",
+      "arch": "all",
+      "url": "https://github.com/PHPCompatibility/PHPCompatibilityWP/archive/refs/tags/3.0.0-alpha2.tar.gz",
+      "sha256": "83631b9d6cf11bf90efcd59f2b74d0b56d5f44610cd1972b80e4d18c130f2bad",
+      "strip": "PHPCompatibilityWP-3.0.0-alpha2",
+      "files": [
+        "PHPCompatibilityWP/",
+        "LICENSE"
+      ]
     }
   ]
 }
