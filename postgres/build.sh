@@ -27,6 +27,7 @@ cd "postgresql-$version"
 export MACOSX_DEPLOYMENT_TARGET=14.0
 prefix="$work/pg"
 ./configure --prefix="$prefix" --without-icu --without-openssl --with-libedit-preferred \
+	--with-system-tzdata=/usr/share/zoneinfo \
 	--with-uuid=e2fs --without-llvm --without-gssapi --without-ldap --without-pam --without-perl --without-python --without-tcl \
 	>/dev/null
 make -j"$(sysctl -n hw.ncpu)" >/dev/null
@@ -60,7 +61,7 @@ done
 if otool -L bin/* lib/*.dylib lib/postgresql/*.dylib | grep -E "^\s+/" | grep -vE "^\s+/(usr/lib|System)/"; then
 	echo "linked outside macOS"; exit 1
 fi
-if [ -n "$(find . -type l)" ]; then echo "symbolic links left"; exit 1; fi
+if [ -n "$(find . -type l)" ] || [ -n "$(find . -type f -links +1)" ]; then echo "links left"; exit 1; fi
 
 # Smoke test from another place, as Covo will run it.
 moved="$work/moved/postgres"
