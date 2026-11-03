@@ -38,6 +38,7 @@ type Artifact struct {
 	SHA256    string   `json:"sha256"`
 	SHA512    string   `json:"sha512,omitempty"`
 	MD5       string   `json:"md5,omitempty"`
+	MinMacOS  string   `json:"min_macos,omitempty"`
 	Strip     string   `json:"strip,omitempty"`
 	Files     []string `json:"files"`
 }

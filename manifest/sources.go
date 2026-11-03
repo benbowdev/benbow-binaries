@@ -19,6 +19,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 )
@@ -36,6 +37,7 @@ var sources = []source{
 	{"wordpress", checkWordPress},
 	{"cabundle", checkCABundle},
 	{"php", checkPHP},
+	{"legacy-php", checkLegacyPHP},
 	{"xdebug", checkXdebug},
 }
 
@@ -479,6 +481,68 @@ func checkXdebug(m Manifest) ([]Artifact, error) {
 			}
 			out = append(out, Artifact{Component: "xdebug", Version: mm[1], For: mm[2], Arch: mm[3], Format: "file",
 				URL: url, SHA256: s.sha256, Files: []string{"xdebug.so"}})
+		}
+	}
+	return out, nil
+}
+
+var legacyName = regexp.MustCompile(`^php-((?:5|7)\.\d+\.\d+)-(fpm|cli)-macos-aarch64\.tar\.gz$`)
+
+// checkLegacyPHP adds PHP 5.6 to 7.4 published by this repository's
+// legacy-php workflow (SHA-256 from the release's SHA256SUMS, checked
+// against the download). Built on macOS 15, for Apple Silicon only.
+func checkLegacyPHP(m Manifest) ([]Artifact, error) {
+	var rels []ghRelease
+	if err := getJSON("https://api.github.com/repos/getcovo/covo-binaries/releases?per_page=30", &rels); err != nil {
+		return nil, err
+	}
+	var out []Artifact
+	for _, r := range rels {
+		if r.Draft || !strings.HasPrefix(r.TagName, "legacy-php-") {
+			continue
+		}
+		sumsURL, _, ok := r.asset("SHA256SUMS")
+		if !ok {
+			continue
+		}
+		text, err := getText(sumsURL)
+		if err != nil {
+			return out, err
+		}
+		for _, line := range strings.Split(text, "\n") {
+			f := strings.Fields(line)
+			if len(f) != 2 {
+				continue
+			}
+			mm := legacyName.FindStringSubmatch(f[1])
+			if mm == nil {
+				continue
+			}
+			v, kind := mm[1], mm[2]
+			component, bin := "php", "php-fpm"
+			if kind == "cli" {
+				component, bin = "php-cli", "php"
+			}
+			if known(m, component, v) || slices.ContainsFunc(out, func(a Artifact) bool { return a.Component == component && a.Version == v }) {
+				continue
+			}
+			url, _, ok := r.asset(f[1])
+			if !ok {
+				continue
+			}
+			s, err := download(url)
+			if err != nil {
+				return out, err
+			}
+			if err := mustMatch("sha256", s.sha256, f[0], url); err != nil {
+				return out, err
+			}
+			a := Artifact{Component: component, Version: v, Arch: "arm64", URL: url, SHA256: s.sha256,
+				MinMacOS: "15.0", Files: []string{bin, "lib/", "ext/"}}
+			if kind == "cli" {
+				a.For = v
+			}
+			out = append(out, a)
 		}
 	}
 	return out, nil
