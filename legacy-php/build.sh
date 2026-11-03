@@ -23,6 +23,8 @@ mkdir -p "$2"
 out=$(cd "$2" && pwd)
 
 brew tap shivammathur/php >/dev/null
+# Versions built earlier in the same run would clash in /opt/homebrew/bin.
+brew list --formula | grep -E '^php(@|$)' | xargs -n1 brew unlink >/dev/null 2>&1 || true
 brew install --quiet "shivammathur/php/php@$minor"
 prefix=$(brew --prefix "php@$minor")
 brew_root=$(brew --prefix)
