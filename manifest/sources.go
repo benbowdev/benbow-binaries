@@ -38,6 +38,8 @@ var sources = []source{
 	{"cabundle", checkCABundle},
 	{"php", checkPHP},
 	{"legacy-php", checkLegacyPHP},
+	{"postgres", checkBuilt("postgres", "postgres", regexp.MustCompile(`^postgresql-([\d.]+)-macos-(arm64|x86_64)\.tar\.gz$`), []string{"bin/", "lib/", "share/"})},
+	{"redis", checkBuilt("redis", "redis", regexp.MustCompile(`^redis-([\d.]+)-macos-(arm64|x86_64)\.tar\.gz$`), []string{"redis-server", "redis-cli"})},
 	{"xdebug", checkXdebug},
 }
 
@@ -546,4 +548,59 @@ func checkLegacyPHP(m Manifest) ([]Artifact, error) {
 		}
 	}
 	return out, nil
+}
+
+// checkBuilt adds archives this repository's <prefix> workflow published:
+// <name>-<version>-macos-<arm64|x86_64>.tar.gz listed in the release's
+// SHA256SUMS (checked against the download).
+func checkBuilt(component, prefix string, name *regexp.Regexp, files []string) func(Manifest) ([]Artifact, error) {
+	return func(m Manifest) ([]Artifact, error) {
+		var rels []ghRelease
+		if err := getJSON("https://api.github.com/repos/getcovo/covo-binaries/releases?per_page=30", &rels); err != nil {
+			return nil, err
+		}
+		var out []Artifact
+		for _, r := range rels {
+			if r.Draft || !strings.HasPrefix(r.TagName, prefix+"-") {
+				continue
+			}
+			sumsURL, _, ok := r.asset("SHA256SUMS")
+			if !ok {
+				continue
+			}
+			text, err := getText(sumsURL)
+			if err != nil {
+				return out, err
+			}
+			for _, line := range strings.Split(text, "\n") {
+				f := strings.Fields(line)
+				if len(f) != 2 {
+					continue
+				}
+				mm := name.FindStringSubmatch(f[1])
+				if mm == nil {
+					continue
+				}
+				v, arch := mm[1], map[string]string{"arm64": "arm64", "x86_64": "amd64"}[mm[2]]
+				if knownFor(m, component, v, "", arch) || slices.ContainsFunc(out, func(a Artifact) bool {
+					return a.Component == component && a.Version == v && a.Arch == arch
+				}) {
+					continue
+				}
+				url, _, ok := r.asset(f[1])
+				if !ok {
+					continue
+				}
+				s, err := download(url)
+				if err != nil {
+					return out, err
+				}
+				if err := mustMatch("sha256", s.sha256, f[0], url); err != nil {
+					return out, err
+				}
+				out = append(out, Artifact{Component: component, Version: v, Arch: arch, URL: url, SHA256: s.sha256, Files: files})
+			}
+		}
+		return out, nil
+	}
 }

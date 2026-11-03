@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Andrea Casali
+#
+# Builds PostgreSQL for Covo on Apple Silicon and Intel from the official source tarball (SHA-256 published by postgresql.org),
+# self-contained and smoke-tested (postgres/build.sh). When asked, publishes
+# both archives with SHA256SUMS as a new GitHub release; the manifest
+# generator adds them to Covo's signed manifest.
+#
+# No third-party actions: only the runner's shell and the gh CLI.
+name: postgres
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Publish the archives as release postgres-<version>-<date>
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # only used by the release steps
+
+env:
+  VERSION: "18.6"
+  SHA256: 555610c24d53e4316da5b7d3fc25c279d96856d5e0e23ee308c328c5fa881d9f
+
+jobs:
+  draft:
+    if: inputs.release
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="postgres-$VERSION-$(date -u +%Y%m%d)-${{ github.run_number }}"
+          gh release create "$tag" --draft --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "PostgreSQL $VERSION for Covo" \
+            --notes "PostgreSQL $VERSION for macOS (arm64 and x86_64), built from the official source tarball (SHA-256 published by postgresql.org) by postgres/build.sh (run ${{ github.run_id }}). Checksums in SHA256SUMS."
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: [draft]
+    if: always() && (needs.draft.result == 'success' || needs.draft.result == 'skipped')
+    strategy:
+      fail-fast: true
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - name: Fetch build script
+        run: |
+          curl -fsSL -o build.sh "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/postgres/build.sh"
+          chmod +x build.sh
+      - name: Build
+        run: ./build.sh "$VERSION" "$SHA256" out
+      - name: Upload to the draft release
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ needs.draft.outputs.tag }}" out/* --repo "${{ github.repository }}"
+
+  publish:
+    if: inputs.release
+    needs: [draft, build]
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ needs.draft.outputs.tag }}"
+          mkdir sums && cd sums
+          gh release download "$tag" --repo "${{ github.repository }}" --pattern '*.sha256'
+          cat *.sha256 > SHA256SUMS
+          cat SHA256SUMS
+          gh release upload "$tag" SHA256SUMS --repo "${{ github.repository }}"
+          for f in *.sha256; do gh release delete-asset "$tag" "$f" --repo "${{ github.repository }}" --yes; done
+          # Assets are never replaced: Covo pins their hashes.
+          gh release edit "$tag" --draft=false --repo "${{ github.repository }}"
