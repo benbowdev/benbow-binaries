@@ -23,7 +23,9 @@ echo "$sha  src.tar.gz" | shasum -a 256 -c -
 tar xzf src.tar.gz
 cd "redis-$version"
 export MACOSX_DEPLOYMENT_TARGET=14.0
-make -j"$(sysctl -n hw.ncpu)" BUILD_TLS=no BUILD_WITH_MODULES=no >/dev/null
+# Only src/: the core server and tools, not the optional modules
+# (RedisJSON, Search…), which need GNU Make 4 and Rust.
+make -C src -j"$(sysctl -n hw.ncpu)" BUILD_TLS=no all >/dev/null
 
 mkdir -p "$work/redis"
 cp src/redis-server src/redis-cli "$work/redis/"
