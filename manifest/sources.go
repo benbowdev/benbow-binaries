@@ -384,12 +384,19 @@ func checkCABundle(m Manifest) ([]Artifact, error) {
 
 var staticArch = map[string]string{"arm64": "aarch64", "amd64": "x86_64"}
 
+// phpMinors are the PHP versions Covo offers, old ones included (the app
+// warns about those without security fixes).
+var phpMinors = []string{"8.0", "8.1", "8.2", "8.3", "8.4", "8.5"}
+
 // checkPHP follows each minor version Covo offers: the newest release on
 // php.net, once static-php-cli has both the FPM and CLI builds for it.
 // static-php-cli publishes no checksums: the SHA-256 of the first
 // download is recorded and never changes afterwards.
 func checkPHP(m Manifest) ([]Artifact, error) {
 	minors := map[string]bool{}
+	for _, minor := range phpMinors {
+		minors[minor] = true
+	}
 	for _, v := range versions(m, "php") {
 		p := strings.SplitN(v, ".", 3)
 		minors[p[0]+"."+p[1]] = true

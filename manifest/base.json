@@ -277,6 +277,132 @@
       "files": [
         "mailpit"
       ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.0.30",
+      "for": "8.0.30",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-cli-macos-aarch64.tar.gz",
+      "sha256": "13c77c837cd50c027e1c614c192b25205123311a30d2335e9a3c8f82d23acb9a",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.0.30",
+      "for": "8.0.30",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-cli-macos-x86_64.tar.gz",
+      "sha256": "b025f2c343916dd97d4cad543f0cc4c07ac882af10bc72773ad27ab8f6c9f59a",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.0.30",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-fpm-macos-aarch64.tar.gz",
+      "sha256": "e91bc2624c4469ceb0d7f7d93d643e1aebadd451556b0b1cc8d5142531b14138",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.0.30",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-fpm-macos-x86_64.tar.gz",
+      "sha256": "ec02cd54162c190c0029ddccbc382e21442b4941aedef9455b8d6fd32bc472d5",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.3.32",
+      "for": "8.3.32",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.3.32-cli-macos-aarch64.tar.gz",
+      "sha256": "ac297da5c45c525c660b8d0c73f5aa478ad9005d7c85096dc841220aa9c192e4",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.3.32",
+      "for": "8.3.32",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.3.32-cli-macos-x86_64.tar.gz",
+      "sha256": "6e059d66d149f2faa1d216e494a660752ef7e5769f2d4fded9a0e089574949a2",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.3.32",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.3.32-fpm-macos-aarch64.tar.gz",
+      "sha256": "0ceed30f5bd9e54f8a8046c3d28fad549f10220736e15dc16e15855d829fbd81",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.3.32",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.3.32-fpm-macos-x86_64.tar.gz",
+      "sha256": "aac3ec085e1d72cfecfeea75981a5301b92f8555655d0997a1875c14669b5dd5",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.5.8",
+      "for": "8.5.8",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.5.8-cli-macos-aarch64.tar.gz",
+      "sha256": "5e5032e8244a2367b1e8a9c70ff6f793dee7433966c9291da85fadf2167cd55f",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.5.8",
+      "for": "8.5.8",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.5.8-cli-macos-x86_64.tar.gz",
+      "sha256": "d5a9a505ebce66c7f6b4f4e16629c36f385f2d360df915875722d67fe8bb2161",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.5.8",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.5.8-fpm-macos-aarch64.tar.gz",
+      "sha256": "1d994fbc4e49015a7cd4ad4fcb7c03e7e219f65fdb14e5e33ef1c44d928368e9",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.5.8",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.5.8-fpm-macos-x86_64.tar.gz",
+      "sha256": "57cdce953a8392e655a800908eb5e8fa61e2b7d795b8e7d3f354b3d81939563d",
+      "files": [
+        "php-fpm"
+      ]
     }
   ]
 }
