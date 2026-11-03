@@ -229,20 +229,26 @@ func checkMailpit(m Manifest) ([]Artifact, error) {
 	return out, nil
 }
 
+// checkAdminer follows Adminer: the MySQL-only build ("adminer") and the
+// build with every driver ("adminer-full", for PostgreSQL).
 func checkAdminer(m Manifest) ([]Artifact, error) {
 	r, err := latest("vrana/adminer")
 	if err != nil || r.Prerelease {
 		return nil, err
 	}
 	v := strings.TrimPrefix(r.TagName, "v")
-	if known(m, "adminer", v) {
-		return nil, nil
+	var out []Artifact
+	for component, file := range map[string]string{"adminer": "adminer-" + v + "-mysql.php", "adminer-full": "adminer-" + v + ".php"} {
+		if known(m, component, v) {
+			continue
+		}
+		url, s, err := fromDigest(r, file)
+		if err != nil {
+			return out, err
+		}
+		out = append(out, Artifact{Component: component, Version: v, Arch: "all", Format: "file", URL: url, SHA256: s.sha256, Files: []string{"adminer.php"}})
 	}
-	url, s, err := fromDigest(r, "adminer-"+v+"-mysql.php")
-	if err != nil {
-		return nil, err
-	}
-	return []Artifact{{Component: "adminer", Version: v, Arch: "all", Format: "file", URL: url, SHA256: s.sha256, Files: []string{"adminer.php"}}}, nil
+	return out, nil
 }
 
 func checkWPCLI(m Manifest) ([]Artifact, error) {
