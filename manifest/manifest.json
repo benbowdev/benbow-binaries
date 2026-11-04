@@ -1,5 +1,5 @@
 {
-  "serial": 2026110300,
+  "serial": 2026110400,
   "artifacts": [
     {
       "component": "php",
@@ -276,6 +276,300 @@
       "sha256": "6f07a68ba48fc569ca4a2bff7871377f71dc4b5c24849fa25da17740989936e4",
       "files": [
         "mailpit"
+      ]
+    },
+    {
+      "component": "caddy",
+      "version": "2.11.8",
+      "arch": "arm64",
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.8/caddy_2.11.8_mac_arm64.tar.gz",
+      "sha256": "efb5b0cb4e24091d9788075e57a4949a6c7905704b099c77ffb61a0b0a0422c8",
+      "sha512": "0c6992b1bb40629b6090d72cdc4a3f3722a7f6b667606db9fe67bfea0e42e9c40736d10925d406bf103628a5e906e59300d616a0709bc8855d9e85efbcfece81",
+      "files": [
+        "caddy"
+      ]
+    },
+    {
+      "component": "caddy",
+      "version": "2.11.8",
+      "arch": "amd64",
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.8/caddy_2.11.8_mac_amd64.tar.gz",
+      "sha256": "2e7d89092bb963a3b64b353738a13e8240922c2e812f5c332ff00c2e4ac8e39b",
+      "sha512": "946399a20f1c10d82ab593680ab975879c49af6741d8be20a30199469a762c802a112183ee2c40ae78980bdbbbf3b335461ad0aa12d9780ff1634e9a41361872",
+      "files": [
+        "caddy"
+      ]
+    },
+    {
+      "component": "adminer",
+      "version": "6.3.0",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/vrana/adminer/releases/download/v6.3.0/adminer-6.3.0-mysql.php",
+      "sha256": "33af3816a08213ae7579f8416e66d7d70054d6bcd70516d4ad3124f4b8b5c1e0",
+      "files": [
+        "adminer.php"
+      ]
+    },
+    {
+      "component": "adminer-full",
+      "version": "6.3.0",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/vrana/adminer/releases/download/v6.3.0/adminer-6.3.0.php",
+      "sha256": "641e1a31e8cc333a309e202ef9446e1fd38c2069ed5f9ee509b80d70089d0503",
+      "files": [
+        "adminer.php"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.0.30",
+      "arch": "arm64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-fpm-macos-aarch64.tar.gz",
+      "sha256": "e91bc2624c4469ceb0d7f7d93d643e1aebadd451556b0b1cc8d5142531b14138",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.0.30",
+      "arch": "arm64",
+      "for": "8.0.30",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-cli-macos-aarch64.tar.gz",
+      "sha256": "13c77c837cd50c027e1c614c192b25205123311a30d2335e9a3c8f82d23acb9a",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "8.0.30",
+      "arch": "amd64",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-fpm-macos-x86_64.tar.gz",
+      "sha256": "ec02cd54162c190c0029ddccbc382e21442b4941aedef9455b8d6fd32bc472d5",
+      "files": [
+        "php-fpm"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "8.0.30",
+      "arch": "amd64",
+      "for": "8.0.30",
+      "url": "https://dl.static-php.dev/static-php-cli/bulk/php-8.0.30-cli-macos-x86_64.tar.gz",
+      "sha256": "b025f2c343916dd97d4cad543f0cc4c07ac882af10bc72773ad27ab8f6c9f59a",
+      "files": [
+        "php"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "5.6.40",
+      "arch": "arm64",
+      "for": "5.6.40",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-5.6.40-cli-macos-aarch64.tar.gz",
+      "sha256": "e8642781d5342373d57157c7ed93c1bb09524f114ec4bdc18dc1934e2e46399a",
+      "min_macos": "15.0",
+      "files": [
+        "php",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "5.6.40",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-5.6.40-fpm-macos-aarch64.tar.gz",
+      "sha256": "eb69ac7289e39b18b20b54592f0d3e05c752c1fd65bee764c5d498c17d946f57",
+      "min_macos": "15.0",
+      "files": [
+        "php-fpm",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "7.0.33",
+      "arch": "arm64",
+      "for": "7.0.33",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.0.33-cli-macos-aarch64.tar.gz",
+      "sha256": "bd22b04ac9b853f1495620ff1140516a0ec1488d1cc8519be122bdb67256cdf3",
+      "min_macos": "15.0",
+      "files": [
+        "php",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "7.0.33",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.0.33-fpm-macos-aarch64.tar.gz",
+      "sha256": "11aef25ecd70085b40341d72b7930e6c8675a3edab764649ef822cd68fecc230",
+      "min_macos": "15.0",
+      "files": [
+        "php-fpm",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "7.1.33",
+      "arch": "arm64",
+      "for": "7.1.33",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.1.33-cli-macos-aarch64.tar.gz",
+      "sha256": "1fc45a6923d124901602cd04d047f99d1c88c6036d94c766d6d51d15fd23d476",
+      "min_macos": "15.0",
+      "files": [
+        "php",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "7.1.33",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.1.33-fpm-macos-aarch64.tar.gz",
+      "sha256": "915c429907e8947b7010afc81d7f09c5da57c4f732ddb6fcf42729add2d24a8f",
+      "min_macos": "15.0",
+      "files": [
+        "php-fpm",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "7.2.34",
+      "arch": "arm64",
+      "for": "7.2.34",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.2.34-cli-macos-aarch64.tar.gz",
+      "sha256": "d349e9f37149e82797bcde0ced5067b3fc0cb969ed9765362bee6e84c78293cf",
+      "min_macos": "15.0",
+      "files": [
+        "php",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "7.2.34",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.2.34-fpm-macos-aarch64.tar.gz",
+      "sha256": "03fbacbaa401f3ebc280dd112b2a2012dbaa173bc1fcf7d34495e5eae923bfdd",
+      "min_macos": "15.0",
+      "files": [
+        "php-fpm",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "7.3.33",
+      "arch": "arm64",
+      "for": "7.3.33",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.3.33-cli-macos-aarch64.tar.gz",
+      "sha256": "9276239ce02631927882d7e5597f8d6ad0e205123c46b89eeacf235084f1954e",
+      "min_macos": "15.0",
+      "files": [
+        "php",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "7.3.33",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.3.33-fpm-macos-aarch64.tar.gz",
+      "sha256": "83c345b03a5bee124635b83d9eb2676bb9268b3160a2a3c1e4d524cad3fbb07c",
+      "min_macos": "15.0",
+      "files": [
+        "php-fpm",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php-cli",
+      "version": "7.4.33",
+      "arch": "arm64",
+      "for": "7.4.33",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.4.33-cli-macos-aarch64.tar.gz",
+      "sha256": "e22d7f2e80503d9b13a761713b2847aff9ddf3b6557e964253cdc6db16101ba1",
+      "min_macos": "15.0",
+      "files": [
+        "php",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "php",
+      "version": "7.4.33",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/legacy-php-20261103-5/php-7.4.33-fpm-macos-aarch64.tar.gz",
+      "sha256": "6d59b3204bd8e33a6eb6f5bff469c25c3c86292de324dd5e6709c1bcbbe34b93",
+      "min_macos": "15.0",
+      "files": [
+        "php-fpm",
+        "lib/",
+        "ext/"
+      ]
+    },
+    {
+      "component": "postgres",
+      "version": "18.6",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/postgres-18.6-20261103-4/postgresql-18.6-macos-arm64.tar.gz",
+      "sha256": "e281f9714939d33482b6744f7eb22883c9f2c2402b4a00bbd34e33355fb4de0f",
+      "files": [
+        "bin/",
+        "lib/",
+        "share/"
+      ]
+    },
+    {
+      "component": "postgres",
+      "version": "18.6",
+      "arch": "amd64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/postgres-18.6-20261103-4/postgresql-18.6-macos-x86_64.tar.gz",
+      "sha256": "8ad7ebadcb2d60e07042d74221a8cb0670d34fd72b7d53f393afd7dc655652b8",
+      "files": [
+        "bin/",
+        "lib/",
+        "share/"
+      ]
+    },
+    {
+      "component": "redis",
+      "version": "8.10.3",
+      "arch": "arm64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/redis-8.10.3-20261103-3/redis-8.10.3-macos-arm64.tar.gz",
+      "sha256": "13b3b2c0333346a003fa0e607b54e82a51f5a15d50b843c6eac358a5a50aed71",
+      "files": [
+        "redis-server",
+        "redis-cli"
+      ]
+    },
+    {
+      "component": "redis",
+      "version": "8.10.3",
+      "arch": "amd64",
+      "url": "https://github.com/getcovo/covo-binaries/releases/download/redis-8.10.3-20261103-3/redis-8.10.3-macos-x86_64.tar.gz",
+      "sha256": "0a19c0ae83752e4761ed7bdd8a7bec03faed6a41ec79939f4b5791caa203b04b",
+      "files": [
+        "redis-server",
+        "redis-cli"
       ]
     }
   ]
