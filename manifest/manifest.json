@@ -1,5 +1,6 @@
 {
-  "serial": 2026110500,
+  "serial": 2026110501,
+  "expires": "2026-11-19T15:10:27Z",
   "artifacts": [
     {
       "component": "php",
