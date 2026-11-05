@@ -5,7 +5,8 @@
 # verify them against their upstream checksums, add them to Covo's manifest
 # and sign it. Covo only accepts the manifest with this signature (its
 # public key is compiled into Covo) and only if it is newer than the one it
-# has; entries are only ever added.
+# has; entries are only ever added. The manifest expires after 14 days:
+# this run signs it again when less than 7 are left, even with nothing new.
 #
 # No third-party actions: only the runner's shell, git and Go.
 name: manifest

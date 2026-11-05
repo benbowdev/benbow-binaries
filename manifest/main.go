@@ -45,8 +45,23 @@ type Artifact struct {
 
 // Manifest mirrors Covo's components.Manifest.
 type Manifest struct {
-	Serial    int64      `json:"serial"`
+	Serial int64 `json:"serial"`
+	// Expires (RFC 3339, UTC): Covo refuses a published manifest past this
+	// time, so a stuck or hijacked server cannot keep it on an old manifest
+	// unnoticed. Renewed before it gets close (see lifetime, renewBefore).
+	Expires   string     `json:"expires"`
 	Artifacts []Artifact `json:"artifacts"`
+}
+
+const (
+	lifetime    = 14 * 24 * time.Hour
+	renewBefore = 7 * 24 * time.Hour
+)
+
+// needsRenewal: no expiry yet, unreadable, or less than renewBefore left.
+func needsRenewal(expires string, now time.Time) bool {
+	t, err := time.Parse(time.RFC3339, expires)
+	return err != nil || t.Sub(now) < renewBefore
 }
 
 func key(a Artifact) string { return a.Component + "|" + a.Version + "|" + a.Arch + "|" + a.For }
@@ -87,12 +102,14 @@ func main() {
 			log.Printf("add %s %s %s %s", a.Component, a.Version, a.Arch, a.For)
 		}
 	}
-	if len(added) == 0 && fileExists(published) {
+	now := time.Now().UTC()
+	if len(added) == 0 && fileExists(published) && !needsRenewal(m.Expires, now) {
 		log.Print("nothing new")
 		return
 	}
 	m.Artifacts = append(m.Artifacts, added...)
-	m.Serial = nextSerial(m.Serial, time.Now().UTC())
+	m.Serial = nextSerial(m.Serial, now)
+	m.Expires = now.Add(lifetime).Format(time.RFC3339)
 	body, err := json.MarshalIndent(m, "", "  ")
 	if err != nil {
 		log.Fatal(err)
@@ -114,7 +131,7 @@ func main() {
 	if err := os.WriteFile(published+".sig", []byte(base64.StdEncoding.EncodeToString(sig)+"\n"), 0o644); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("serial %d, %d new artifacts\n", m.Serial, len(added))
+	fmt.Printf("serial %d, %d new artifacts, expires %s\n", m.Serial, len(added), m.Expires)
 }
 
 // nextSerial is YYYYMMDDnn, always greater than prev.
