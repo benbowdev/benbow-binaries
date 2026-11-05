@@ -8,6 +8,12 @@
 # has; entries are only ever added. The manifest expires after 14 days:
 # this run signs it again when less than 7 are left, even with nothing new.
 #
+# The signed manifest is also attached to the release tagged "manifest".
+# Covo's daily automatic check downloads it from there (at most once every
+# 24 hours per Mac), so its download count is about the number of Macs that
+# ran Covo that day. Each run records the count in stats/manifest-checks.csv
+# and replaces the asset (manifest/release.go). Nothing else is collected.
+#
 # No third-party actions: only the runner's shell, git and Go.
 name: manifest
 
@@ -17,7 +23,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # commit manifest/manifest.json and its signature
+  contents: write # commit the manifest, its signature and the stats; replace the release asset
 
 concurrency:
   group: manifest
@@ -41,14 +47,23 @@ jobs:
           GOTOOLCHAIN: auto
         run: go run . -sign
 
+      - name: Attach to the manifest release
+        working-directory: repo/manifest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GOTOOLCHAIN: auto
+        run: go run . -release
+
       - name: Publish
         working-directory: repo
         run: |
           git add manifest/manifest.json manifest/manifest.json.sig
+          if [ -f stats/manifest-checks.csv ]; then git add stats/manifest-checks.csv; fi
           if git diff --cached --quiet; then
             echo "nothing new"
             exit 0
           fi
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-            commit -m "chore: update the signed manifest (run ${{ github.run_id }})"
+            commit -m "chore: update the signed manifest and stats (run ${{ github.run_id }})"
           git push

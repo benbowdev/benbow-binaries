@@ -44,10 +44,33 @@ Each release holds `xdebug-<xdebug>-php-<php>-macos-arm64.so` files and a
    higher `serial`, and signs the file with ed25519
    (`manifest/manifest.json.sig`). The private key is the secret
    `COVO_MANIFEST_KEY` of this repository; Covo compiles in the public key.
+   The manifest expires after 14 days and is signed again when less than 7
+   are left, even with nothing new;
+4. in a separate step that never sees the key, attaches the signed manifest
+   to the release tagged `manifest` (see below).
 
-Covo fetches the manifest from `main` once a day, verifies the signature
-and the serial, and offers the updates; nothing is installed without the
-user. MySQL is not followed automatically yet (new 8.4 releases are pinned
+Covo's daily automatic check downloads the manifest from that release and
+falls back to `main` (raw) when the release is unreachable; manual checks
+use `main` directly. It verifies the signature, the expiry and the serial,
+and offers the updates; nothing is installed without the user.
+
+### Daily update checks
+
+A Mac running Covo checks automatically at most once every 24 hours, so
+the download count of the release's `manifest.json` is about the number of
+Macs that ran Covo that day. No identifier is sent and nothing else is
+collected: GitHub only counts downloads. Each run of the workflow:
+
+- leaves the asset alone if it is less than 20 hours old and the manifest
+  has not changed (manual runs, a second run the same day);
+- otherwise deletes the asset, then appends its life and count to
+  `stats/manifest-checks.csv` (`period_start,period_end,checks`), and
+  uploads the new one, labelled with its serial. Periods never overlap, so
+  nothing is counted twice; a failed run records nothing.
+
+The first row appears the day after the release is created. Older Covo
+versions (before 0.1.0-beta.4) fetch from `main` and are not counted, nor
+are Macs that turned the automatic check off. MySQL is not followed automatically yet (new 8.4 releases are pinned
 by hand after checking Oracle's GPG signature). A new PHP version waits for
 an Xdebug build when Xdebug is on: run the xdebug workflow for it.
 

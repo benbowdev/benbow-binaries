@@ -9,8 +9,10 @@
 // It only adds entries: an artifact already in the manifest is never
 // changed, and Covo refuses a manifest that tries. Run in this folder:
 //
-//	go run . -sign   # COVO_MANIFEST_KEY: base64 ed25519 seed
-//	go run .         # dry run: report what would be added
+//	go run . -sign      # COVO_MANIFEST_KEY: base64 ed25519 seed
+//	go run . -release   # then attach it to the "manifest" release
+//	                    # (GITHUB_TOKEN, GITHUB_REPOSITORY; release.go)
+//	go run .            # dry run: report what would be added
 package main
 
 import (
@@ -69,8 +71,16 @@ func key(a Artifact) string { return a.Component + "|" + a.Version + "|" + a.Arc
 func main() {
 	sign := flag.Bool("sign", false, "sign with COVO_MANIFEST_KEY and write manifest/manifest.json(.sig)")
 	dir := flag.String("dir", ".", "folder with base.json and the published manifest")
+	release := flag.Bool("release", false, "only attach the signed manifest to the \"manifest\" release, recording the old asset's download count")
+	stats := flag.String("stats", "../stats/manifest-checks.csv", "CSV of daily update checks (with -release)")
 	flag.Parse()
 	defer removeTemps()
+	if *release {
+		// A step of its own, after -sign: it never sees the signing key, and
+		// it never fails the run (the manifest on main matters more).
+		publishToRelease(*dir, *stats)
+		return
+	}
 
 	published := filepath.Join(*dir, "manifest.json")
 	m, err := load(published)
