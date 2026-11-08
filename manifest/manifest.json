@@ -1,6 +1,6 @@
 {
-  "serial": 2026110501,
-  "expires": "2026-11-19T15:10:27Z",
+  "serial": 2026110800,
+  "expires": "2026-11-22T11:56:10Z",
   "artifacts": [
     {
       "component": "php",
@@ -604,6 +604,26 @@
       "sha256": "427c064216761a1e72a8b30f0d954d08cb6e4435a82091fb865afd20c8497285",
       "files": [
         "cacert.pem"
+      ]
+    },
+    {
+      "component": "mailpit",
+      "version": "1.33.1",
+      "arch": "arm64",
+      "url": "https://github.com/axllent/mailpit/releases/download/v1.33.1/mailpit-darwin-arm64.tar.gz",
+      "sha256": "15703838762355d42befeb1c942f3a5cc53bcf1fa3ba6abc216a05dd254a8ac2",
+      "files": [
+        "mailpit"
+      ]
+    },
+    {
+      "component": "mailpit",
+      "version": "1.33.1",
+      "arch": "amd64",
+      "url": "https://github.com/axllent/mailpit/releases/download/v1.33.1/mailpit-darwin-amd64.tar.gz",
+      "sha256": "d8ca2a9da16c977189f2514a7fc28f8a47fe050bd2b0296a13c815288b5fe39f",
+      "files": [
+        "mailpit"
       ]
     }
   ]
