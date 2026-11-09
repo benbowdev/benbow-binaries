@@ -1,17 +1,17 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2026 Andrea Casali
 #
-# Every day: look for new upstream versions of the components Covo runs,
-# verify them against their upstream checksums, add them to Covo's manifest
-# and sign it. Covo only accepts the manifest with this signature (its
-# public key is compiled into Covo) and only if it is newer than the one it
+# Every day: look for new upstream versions of the components Benbow runs,
+# verify them against their upstream checksums, add them to Benbow's manifest
+# and sign it. Benbow only accepts the manifest with this signature (its
+# public key is compiled into Benbow) and only if it is newer than the one it
 # has; entries are only ever added. The manifest expires after 14 days:
 # this run signs it again when less than 7 are left, even with nothing new.
 #
 # The signed manifest is also attached to the release tagged "manifest".
-# Covo's daily automatic check downloads it from there (at most once every
+# Benbow's daily automatic check downloads it from there (at most once every
 # 24 hours per Mac), so its download count is about the number of Macs that
-# ran Covo that day. Each run records the count in stats/manifest-checks.csv
+# ran Benbow that day. Each run records the count in stats/manifest-checks.csv
 # and replaces the asset (manifest/release.go). Nothing else is collected.
 #
 # No third-party actions: only the runner's shell, git and Go.

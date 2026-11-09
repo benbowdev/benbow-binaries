@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2026 Andrea Casali
 #
-# Builds xdebug.so for every PHP version pinned in Covo's manifest, checks
-# each one against the exact static-php-cli binary Covo runs, and (when
-# asked) publishes them with their SHA-256 as a GitHub release. Covo pins
+# Builds xdebug.so for every PHP version pinned in Benbow's manifest, checks
+# each one against the exact static-php-cli binary Benbow runs, and (when
+# asked) publishes them with their SHA-256 as a GitHub release. Benbow pins
 # those hashes in its embedded manifest.
 #
 # No third-party actions: only the runner's shell and the gh CLI.
@@ -57,9 +57,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Assets are never replaced: Covo pins their hashes. A new PHP or
+          # Assets are never replaced: Benbow pins their hashes. A new PHP or
           # Xdebug version gets a new tag.
           tag="xdebug-$XDEBUG_VERSION-$(date -u +%Y%m%d)"
           gh release create "$tag" out/* --repo "${{ github.repository }}" --target "${{ github.sha }}" \
-            --title "Xdebug $XDEBUG_VERSION for Covo" \
-            --notes "xdebug.so $XDEBUG_VERSION built by .github/workflows/xdebug.yml (run ${{ github.run_id }}) for the static-php-cli PHP-FPM builds pinned in Covo, macOS arm64. Checksums in SHA256SUMS."
+            --title "Xdebug $XDEBUG_VERSION for Benbow" \
+            --notes "xdebug.so $XDEBUG_VERSION built by .github/workflows/xdebug.yml (run ${{ github.run_id }}) for the static-php-cli PHP-FPM builds pinned in Benbow, macOS arm64. Checksums in SHA256SUMS."

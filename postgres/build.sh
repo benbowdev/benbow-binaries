@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2026 Andrea Casali
 #
-# Builds a self-contained, relocatable PostgreSQL for Covo from the official
+# Builds a self-contained, relocatable PostgreSQL for Benbow from the official
 # source tarball (its published SHA-256 is checked first): server, psql,
 # pg_dump/pg_restore and a few contrib extensions. Only macOS's own
-# libraries are linked (no ICU, no OpenSSL: Covo's PostgreSQL listens on
+# libraries are linked (no ICU, no OpenSSL: Benbow's PostgreSQL listens on
 # 127.0.0.1 only); libpq is relinked to @executable_path. The result is
 # smoke-tested with initdb, pg_ctl and psql.
 #
@@ -40,7 +40,7 @@ done
 # lib/postgresql relative to its own location already.
 cd "$prefix"
 rm -rf include lib/pkgconfig lib/*.a
-# Plain files only (Covo's installer refuses unlisted symbolic links):
+# Plain files only (Benbow's installer refuses unlisted symbolic links):
 # libpq.dylib -> libpq.5.dylib -> libpq.5.18.dylib become copies.
 find bin lib share -type l | while read -r link; do
 	target=$(realpath "$link")
@@ -63,7 +63,7 @@ if otool -L bin/* lib/*.dylib lib/postgresql/*.dylib | grep -E "^\s+/" | grep -v
 fi
 if [ -n "$(find . -type l)" ] || [ -n "$(find . -type f -links +1)" ]; then echo "links left"; exit 1; fi
 
-# Smoke test from another place, as Covo will run it.
+# Smoke test from another place, as Benbow will run it.
 moved="$work/moved/postgres"
 mkdir -p "$(dirname "$moved")"
 cp -R "$prefix" "$moved"

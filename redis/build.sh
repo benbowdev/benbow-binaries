@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2026 Andrea Casali
 #
-# Builds redis-server and redis-cli for Covo from the official source
+# Builds redis-server and redis-cli for Benbow from the official source
 # tarball (SHA-256 from github.com/redis/redis-hashes, checked first),
-# without the optional modules or TLS: Covo's Redis listens on 127.0.0.1
+# without the optional modules or TLS: Benbow's Redis listens on 127.0.0.1
 # only. Only macOS's own libraries are linked. Smoke-tested with PING, SET
 # and GET.
 #
@@ -39,8 +39,8 @@ fi
 ./redis-server --port 56380 --bind 127.0.0.1 --save "" --appendonly no --daemonize yes --pidfile "$work/r.pid" --logfile "$work/r.log"
 trap './redis-cli -p 56380 shutdown nosave >/dev/null 2>&1 || true' EXIT
 for _ in $(seq 50); do ./redis-cli -p 56380 ping 2>/dev/null | grep -q PONG && break; sleep 0.1; done
-./redis-cli -p 56380 set covo ok >/dev/null
-[ "$(./redis-cli -p 56380 get covo)" = ok ]
+./redis-cli -p 56380 set benbow ok >/dev/null
+[ "$(./redis-cli -p 56380 get benbow)" = ok ]
 ./redis-server --version | grep -q "v=$version"
 echo "Redis $version ($arch) works"
 

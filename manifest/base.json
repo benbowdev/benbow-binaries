@@ -111,7 +111,7 @@
       "for": "8.4.23",
       "arch": "arm64",
       "format": "file",
-      "url": "https://github.com/getcovo/covo-binaries/releases/download/xdebug-3.5.3-20261029/xdebug-3.5.3-php-8.4.23-macos-arm64.so",
+      "url": "https://github.com/benbowdev/benbow-binaries/releases/download/xdebug-3.5.3-20261029/xdebug-3.5.3-php-8.4.23-macos-arm64.so",
       "sha256": "195e3427c3f352cfcaff60c2420f7b2fd0f0ff6973e65c1d017a11183d545e9b",
       "files": [
         "xdebug.so"
@@ -123,7 +123,7 @@
       "for": "8.2.32",
       "arch": "arm64",
       "format": "file",
-      "url": "https://github.com/getcovo/covo-binaries/releases/download/xdebug-3.5.3-20261029/xdebug-3.5.3-php-8.2.32-macos-arm64.so",
+      "url": "https://github.com/benbowdev/benbow-binaries/releases/download/xdebug-3.5.3-20261029/xdebug-3.5.3-php-8.2.32-macos-arm64.so",
       "sha256": "00a9f41883c99f3cb287e62c3fb5e4433cf5975c173a3f448b9577cd3881c13b",
       "files": [
         "xdebug.so"

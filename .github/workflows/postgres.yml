@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2026 Andrea Casali
 #
-# Builds PostgreSQL for Covo on Apple Silicon and Intel from the official source tarball (SHA-256 published by postgresql.org),
+# Builds PostgreSQL for Benbow on Apple Silicon and Intel from the official source tarball (SHA-256 published by postgresql.org),
 # self-contained and smoke-tested (postgres/build.sh). When asked, publishes
 # both archives with SHA256SUMS as a new GitHub release; the manifest
-# generator adds them to Covo's signed manifest.
+# generator adds them to Benbow's signed manifest.
 #
 # No third-party actions: only the runner's shell and the gh CLI.
 name: postgres
@@ -37,7 +37,7 @@ jobs:
         run: |
           tag="postgres-$VERSION-$(date -u +%Y%m%d)-${{ github.run_number }}"
           gh release create "$tag" --draft --repo "${{ github.repository }}" --target "${{ github.sha }}" \
-            --title "PostgreSQL $VERSION for Covo" \
+            --title "PostgreSQL $VERSION for Benbow" \
             --notes "PostgreSQL $VERSION for macOS (arm64 and x86_64), built from the official source tarball (SHA-256 published by postgresql.org) by postgres/build.sh (run ${{ github.run_id }}). Checksums in SHA256SUMS."
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
@@ -78,5 +78,5 @@ jobs:
           cat SHA256SUMS
           gh release upload "$tag" SHA256SUMS --repo "${{ github.repository }}"
           for f in *.sha256; do gh release delete-asset "$tag" "$f" --repo "${{ github.repository }}" --yes; done
-          # Assets are never replaced: Covo pins their hashes.
+          # Assets are never replaced: Benbow pins their hashes.
           gh release edit "$tag" --draft=false --repo "${{ github.repository }}"

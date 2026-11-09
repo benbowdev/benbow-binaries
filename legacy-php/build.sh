@@ -4,13 +4,13 @@
 #
 # Turns shivammathur/php's Homebrew build of an end-of-life PHP version
 # (5.6 to 7.4, with security fixes backported by shivammathur/php-src-backports)
-# into two self-contained archives for Covo, like static-php-cli's:
+# into two self-contained archives for Benbow, like static-php-cli's:
 #
 #   php-<version>-fpm-macos-aarch64.tar.gz   php-fpm + lib/ + ext/
 #   php-<version>-cli-macos-aarch64.tar.gz   php     + lib/ + ext/
 #
 # ext/ holds the extensions built as shared objects (intl in 7.4, opcache):
-# Covo loads every .so in it from its php.ini.
+# Benbow loads every .so in it from its php.ini.
 #
 # Every library the binary needs from Homebrew is copied into lib/ and
 # relinked to @executable_path/lib, then everything is ad-hoc signed. The
@@ -81,7 +81,7 @@ sudo mv "$brew_root" "$brew_root.off"
 trap 'sudo mv "$brew_root.off" "$brew_root"' EXIT
 "$work/cli/php" -n -v | head -1 | grep -q "^PHP $version " || { echo "php -v failed"; exit 1; }
 "$work/fpm/php-fpm" -n -v | head -1 | grep -q "^PHP $version " || { echo "php-fpm -v failed"; exit 1; }
-# Load the shared extensions the way Covo's php.ini does.
+# Load the shared extensions the way Benbow's php.ini does.
 load=(-n -d "extension_dir=$work/cli/ext")
 for so in "$work"/cli/ext/*.so; do
 	[ -e "$so" ] || continue
@@ -92,7 +92,7 @@ mods=$("$work/cli/php" "${load[@]}" -m)
 for m in curl openssl mysqli pdo_mysql mbstring gd zip intl xml json; do
 	grep -qix "$m" <<<"$mods" || { echo "PHP $version lacks $m"; exit 1; }
 done
-"$work/cli/php" "${load[@]}" -r 'exit(strlen(hash("sha256", "covo")) === 64 && openssl_random_pseudo_bytes(8) !== false ? 0 : 1);'
+"$work/cli/php" "${load[@]}" -r 'exit(strlen(hash("sha256", "benbow")) === 64 && openssl_random_pseudo_bytes(8) !== false ? 0 : 1);'
 echo "PHP $version runs without Homebrew; shared: $(ls "$work/cli/ext" | tr '\n' ' '); modules: $(echo $mods | tr '\n' ' ')"
 sudo mv "$brew_root.off" "$brew_root"
 trap - EXIT

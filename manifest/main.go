@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 Andrea Casali
 
-// Command covo-manifest looks for new upstream versions of the components
-// Covo runs, verifies each download against the checksum its upstream
+// Command benbow-manifest looks for new upstream versions of the components
+// Benbow runs, verifies each download against the checksum its upstream
 // publishes (or, where there is none, records the SHA-256 of the first
-// download), and writes Covo's signed manifest.
+// download), and writes Benbow's signed manifest.
 //
 // It only adds entries: an artifact already in the manifest is never
-// changed, and Covo refuses a manifest that tries. Run in this folder:
+// changed, and Benbow refuses a manifest that tries. Run in this folder:
 //
 //	go run . -sign      # COVO_MANIFEST_KEY: base64 ed25519 seed
 //	go run . -release   # then attach it to the "manifest" release
@@ -29,7 +29,7 @@ import (
 	"time"
 )
 
-// Artifact mirrors Covo's components.Artifact.
+// Artifact mirrors Benbow's components.Artifact.
 type Artifact struct {
 	Component string   `json:"component"`
 	Version   string   `json:"version"`
@@ -45,10 +45,10 @@ type Artifact struct {
 	Files     []string `json:"files"`
 }
 
-// Manifest mirrors Covo's components.Manifest.
+// Manifest mirrors Benbow's components.Manifest.
 type Manifest struct {
 	Serial int64 `json:"serial"`
-	// Expires (RFC 3339, UTC): Covo refuses a published manifest past this
+	// Expires (RFC 3339, UTC): Benbow refuses a published manifest past this
 	// time, so a stuck or hijacked server cannot keep it on an old manifest
 	// unnoticed. Renewed before it gets close (see lifetime, renewBefore).
 	Expires   string     `json:"expires"`

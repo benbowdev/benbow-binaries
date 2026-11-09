@@ -3,7 +3,7 @@
 # Copyright (C) 2026 Andrea Casali
 #
 # Builds xdebug.so for one PHP version, for the static-php-cli "bulk" PHP-FPM
-# build Covo pins for that version (NTS, non-debug), and checks it against
+# build Benbow pins for that version (NTS, non-debug), and checks it against
 # that exact binary.
 #
 #   build.sh <php version> <php source sha256> <bulk fpm sha256> <out dir>
@@ -54,7 +54,7 @@ tar -xzf xdebug.tgz
 )
 so="xdebug-$XDEBUG_VERSION/modules/xdebug.so"
 
-# Check it against the bulk binary Covo runs.
+# Check it against the bulk binary Benbow runs.
 tar -xzf bulk.tar.gz php-fpm
 fpm=$work/php-fpm
 version=$("$fpm" -n -v)

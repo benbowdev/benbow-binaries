@@ -18,9 +18,9 @@ import (
 )
 
 // The signed manifest is also attached to the release tagged "manifest".
-// Covo's daily automatic check downloads it from there (at most once every
+// Benbow's daily automatic check downloads it from there (at most once every
 // 24 hours per Mac), so the asset's download count is roughly the number of
-// Macs running Covo that day. No identifier is involved: GitHub only counts
+// Macs running Benbow that day. No identifier is involved: GitHub only counts
 // downloads. Every run reads the count, appends it to the stats CSV and
 // replaces the asset, which starts the count again from zero.
 
@@ -135,7 +135,7 @@ func (r releaser) publishRelease(dir, statsPath string) (string, error) {
 			return "", err
 		}
 	}
-	// The signature first: a Covo that finds manifest.json also finds its .sig.
+	// The signature first: a Benbow that finds manifest.json also finds its .sig.
 	if err := r.upload(rel.UploadURL, sigAssetName, label, "text/plain", sig); err != nil {
 		return "", err
 	}
@@ -156,9 +156,9 @@ func (r releaser) release() (ghManifestRelease, error) {
 		"tag_name":         releaseTag,
 		"target_commitish": "main",
 		"name":             "Signed manifest",
-		"body": "Covo's signed component manifest, replaced every day by the manifest workflow. " +
-			"Covo's daily update check downloads it from here; the daily download totals are in stats/manifest-checks.csv. " +
-			"Not a Covo release: see getcovo/covo.",
+		"body": "Benbow's signed component manifest, replaced every day by the manifest workflow. " +
+			"Benbow's daily update check downloads it from here; the daily download totals are in stats/manifest-checks.csv. " +
+			"Not a Benbow release: see benbowdev/benbow.",
 		"make_latest": "false",
 	})
 	_, err = r.do(http.MethodPost, r.api+"/repos/"+r.repo+"/releases", create, "application/json", &rel)
@@ -186,7 +186,7 @@ func (r releaser) do(method, u string, body []byte, contentType string, out any)
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("Authorization", "Bearer "+r.token)
-	req.Header.Set("User-Agent", "covo-manifest")
+	req.Header.Set("User-Agent", "benbow-manifest")
 	if contentType != "" {
 		req.Header.Set("Content-Type", contentType)
 	}

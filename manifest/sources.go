@@ -102,7 +102,7 @@ func download(url string) (sums, error) {
 		return sums{}, err
 	}
 	defer resp.Body.Close()
-	f, err := os.CreateTemp("", "covo-manifest-*")
+	f, err := os.CreateTemp("", "benbow-manifest-*")
 	if err != nil {
 		return sums{}, err
 	}
@@ -394,11 +394,11 @@ func checkCABundle(m Manifest) ([]Artifact, error) {
 
 var staticArch = map[string]string{"arm64": "aarch64", "amd64": "x86_64"}
 
-// phpMinors are the PHP versions Covo offers, old ones included (the app
+// phpMinors are the PHP versions Benbow offers, old ones included (the app
 // warns about those without security fixes).
 var phpMinors = []string{"8.0", "8.1", "8.2", "8.3", "8.4", "8.5"}
 
-// checkPHP follows each minor version Covo offers: the newest release on
+// checkPHP follows each minor version Benbow offers: the newest release on
 // php.net, once static-php-cli has both the FPM and CLI builds for it.
 // static-php-cli publishes no checksums: the SHA-256 of the first
 // download is recorded and never changes afterwards.
@@ -454,7 +454,7 @@ var xdebugName = regexp.MustCompile(`^xdebug-([\d.]+)-php-([\d.]+)-macos-(arm64|
 // checked against the download).
 func checkXdebug(m Manifest) ([]Artifact, error) {
 	var rels []ghRelease
-	if err := getJSON("https://api.github.com/repos/getcovo/covo-binaries/releases?per_page=30", &rels); err != nil {
+	if err := getJSON("https://api.github.com/repos/benbowdev/benbow-binaries/releases?per_page=30", &rels); err != nil {
 		return nil, err
 	}
 	var out []Artifact
@@ -501,7 +501,7 @@ var legacyName = regexp.MustCompile(`^php-((?:5|7)\.\d+\.\d+)-(fpm|cli)-macos-aa
 // against the download). Built on macOS 15, for Apple Silicon only.
 func checkLegacyPHP(m Manifest) ([]Artifact, error) {
 	var rels []ghRelease
-	if err := getJSON("https://api.github.com/repos/getcovo/covo-binaries/releases?per_page=30", &rels); err != nil {
+	if err := getJSON("https://api.github.com/repos/benbowdev/benbow-binaries/releases?per_page=30", &rels); err != nil {
 		return nil, err
 	}
 	var out []Artifact
@@ -562,7 +562,7 @@ func checkLegacyPHP(m Manifest) ([]Artifact, error) {
 func checkBuilt(component, prefix string, name *regexp.Regexp, files []string) func(Manifest) ([]Artifact, error) {
 	return func(m Manifest) ([]Artifact, error) {
 		var rels []ghRelease
-		if err := getJSON("https://api.github.com/repos/getcovo/covo-binaries/releases?per_page=30", &rels); err != nil {
+		if err := getJSON("https://api.github.com/repos/benbowdev/benbow-binaries/releases?per_page=30", &rels); err != nil {
 			return nil, err
 		}
 		var out []Artifact
