@@ -9,7 +9,8 @@
 # linked. The result is smoke-tested: initialize, start, query, dump.
 #
 # usage: build.sh <mysql version> <sha256> <openssl version> <openssl sha256> <out dir>
-# Needs cmake 3.x on PATH (GitHub's macOS runners have it).
+# CMake 3.31 is downloaded and verified: 5.7's build files do not configure
+# with CMake 4 (GitHub's runners have 4.x).
 set -euo pipefail
 
 version=$1 sha=$2 ssl_version=$3 ssl_sha=$4
@@ -21,6 +22,18 @@ mkdir -p "$work"
 cd "$work"
 jobs=$(sysctl -n hw.ncpu)
 export MACOSX_DEPLOYMENT_TARGET=14.0
+
+# CMake 3.31.6 from Kitware (universal), pinned.
+cmake_version=3.31.6
+cmake_sha=330b9514f5112e5ed4fb08b8b05803b776fd9b539a6ae12927d14dcc0ee2ba8d
+cmake_dir="$work/cmake-$cmake_version-macos-universal/CMake.app/Contents/bin"
+if [ ! -x "$cmake_dir/cmake" ]; then
+	curl -fsSL -o cmake.tar.gz "https://github.com/Kitware/CMake/releases/download/v$cmake_version/cmake-$cmake_version-macos-universal.tar.gz"
+	echo "$cmake_sha  cmake.tar.gz" | shasum -a 256 -c -
+	tar xzf cmake.tar.gz
+fi
+export PATH="$cmake_dir:$PATH"
+cmake --version | head -1
 
 # OpenSSL, static.
 if [ ! -f "$work/ssl/lib/libssl.a" ]; then
@@ -54,7 +67,7 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix" 
 	-DWITH_ROUTER=OFF -DWITH_TEST_TRACE_PLUGIN=OFF -DINSTALL_MYSQLTESTDIR= -DENABLED_LOCAL_INFILE=OFF \
 	-DWITH_INNODB_MEMCACHED=OFF -DWITH_RAPID=OFF \
 	-DCMAKE_C_FLAGS="-Wno-error -Wno-incompatible-function-pointer-types -Wno-int-conversion" -DCMAKE_CXX_FLAGS="$cxxflags" >"$work/cmake.log" 2>&1 ||
-	{ tail -40 "$work/cmake.log"; exit 1; }
+	{ grep -A8 "CMake Error" "$work/cmake.log" | head -60; tail -20 "$work/cmake.log"; exit 1; }
 cmake --build build -j"$jobs" >"$work/build.log" 2>&1 || { grep -E "error|Error" "$work/build.log" | head -40; exit 1; }
 cmake --install build >/dev/null
 
