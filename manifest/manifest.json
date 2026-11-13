@@ -1,6 +1,6 @@
 {
-  "serial": 2026110800,
-  "expires": "2026-11-22T11:56:10Z",
+  "serial": 2026111300,
+  "expires": "2026-11-27T14:18:35Z",
   "artifacts": [
     {
       "component": "php",
@@ -624,6 +624,30 @@
       "sha256": "d8ca2a9da16c977189f2514a7fc28f8a47fe050bd2b0296a13c815288b5fe39f",
       "files": [
         "mailpit"
+      ]
+    },
+    {
+      "component": "mysql57",
+      "version": "5.7.44",
+      "arch": "arm64",
+      "url": "https://github.com/benbowdev/benbow-binaries/releases/download/mysql57-5.7.44-20261113-2/mysql-5.7.44-macos-arm64.tar.gz",
+      "sha256": "202702c6ede0ccfc8cfc7a59de496be66e8abc52f3bb4dabcb3aac9926736420",
+      "files": [
+        "bin/",
+        "lib/",
+        "share/"
+      ]
+    },
+    {
+      "component": "mysql57",
+      "version": "5.7.44",
+      "arch": "amd64",
+      "url": "https://github.com/benbowdev/benbow-binaries/releases/download/mysql57-5.7.44-20261113-2/mysql-5.7.44-macos-x86_64.tar.gz",
+      "sha256": "f764c33e6e04e7ba41703aafb11d26bbb03beb27973100e4c6a1c9559639b799",
+      "files": [
+        "bin/",
+        "lib/",
+        "share/"
       ]
     }
   ]
