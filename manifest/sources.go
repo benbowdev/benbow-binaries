@@ -39,6 +39,7 @@ var sources = []source{
 	{"php", checkPHP},
 	{"legacy-php", checkLegacyPHP},
 	{"postgres", checkBuilt("postgres", "postgres", regexp.MustCompile(`^postgresql-([\d.]+)-macos-(arm64|x86_64)\.tar\.gz$`), []string{"bin/", "lib/", "share/"})},
+	{"mysql57", checkBuilt("mysql57", "mysql57", regexp.MustCompile(`^mysql-(5\.7\.\d+)-macos-(arm64|x86_64)\.tar\.gz$`), []string{"bin/", "lib/", "share/"})},
 	{"redis", checkBuilt("redis", "redis", regexp.MustCompile(`^redis-([\d.]+)-macos-(arm64|x86_64)\.tar\.gz$`), []string{"redis-server", "redis-cli"})},
 	{"xdebug", checkXdebug},
 }

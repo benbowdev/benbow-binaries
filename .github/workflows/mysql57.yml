@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Andrea Casali
+#
+# Builds MySQL 5.7 for Benbow on Apple Silicon and Intel from Oracle's mysql-boost source
+# tarball, with OpenSSL 3.0 from source, self-contained and smoke-tested
+# (mysql57/build.sh). When asked, publishes
+# both archives with SHA256SUMS as a new GitHub release; the manifest
+# generator adds them to Benbow's signed manifest.
+#
+# No third-party actions: only the runner's shell and the gh CLI.
+name: mysql57
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Publish the archives as release mysql57-<version>-<date>
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # only used by the release steps
+
+env:
+  VERSION: "5.7.44"
+  # Oracle publishes MD5 only (1a637fce4599d9bf5f1c81699f086274); SHA-256
+  # pinned from that download.
+  SHA256: b8fe262c4679cb7bbc379a3f1addc723844db168628ce2acf78d33906849e491
+  SSL_VERSION: "3.0.15"
+  SSL_SHA256: 23c666d0edf20f14249b3d8f0368acaee9ab585b09e1de82107c66e1f3ec9533
+
+jobs:
+  draft:
+    if: inputs.release
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="mysql57-$VERSION-$(date -u +%Y%m%d)-${{ github.run_number }}"
+          gh release create "$tag" --draft --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "MySQL $VERSION for Benbow" \
+            --notes "MySQL $VERSION for macOS (arm64 and x86_64), built from Oracle's mysql-boost source tarball with OpenSSL $SSL_VERSION by mysql57/build.sh (run ${{ github.run_id }}). Oracle never shipped 5.7 for Apple Silicon; for testing old sites only (5.7 reached end of life in October 2023). Checksums in SHA256SUMS."
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: [draft]
+    if: always() && (needs.draft.result == 'success' || needs.draft.result == 'skipped')
+    strategy:
+      fail-fast: true
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    steps:
+      - name: Fetch build script
+        run: |
+          curl -fsSL -o build.sh "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/mysql57/build.sh"
+          chmod +x build.sh
+      - name: Build
+        run: cmake --version && ./build.sh "$VERSION" "$SHA256" "$SSL_VERSION" "$SSL_SHA256" out
+      - name: Upload to the draft release
+        if: inputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ needs.draft.outputs.tag }}" out/* --repo "${{ github.repository }}"
+
+  publish:
+    if: inputs.release
+    needs: [draft, build]
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ needs.draft.outputs.tag }}"
+          mkdir sums && cd sums
+          gh release download "$tag" --repo "${{ github.repository }}" --pattern '*.sha256'
+          cat *.sha256 > SHA256SUMS
+          cat SHA256SUMS
+          gh release upload "$tag" SHA256SUMS --repo "${{ github.repository }}"
+          for f in *.sha256; do gh release delete-asset "$tag" "$f" --repo "${{ github.repository }}" --yes; done
+          # Assets are never replaced: Benbow pins their hashes.
+          gh release edit "$tag" --draft=false --repo "${{ github.repository }}"
