@@ -32,6 +32,7 @@ type source struct {
 var sources = []source{
 	{"caddy", checkCaddy},
 	{"mailpit", checkMailpit},
+	{"cloudflared", checkCloudflared},
 	{"adminer", checkAdminer},
 	{"wpcli", checkWPCLI},
 	{"wordpress", checkWordPress},
@@ -226,6 +227,28 @@ func checkMailpit(m Manifest) ([]Artifact, error) {
 			return nil, err
 		}
 		out = append(out, Artifact{Component: "mailpit", Version: v, Arch: arch, URL: url, SHA256: s.sha256, Files: []string{"mailpit"}})
+	}
+	return out, nil
+}
+
+// checkCloudflared follows Cloudflare's tunnel client (Benbow's public
+// link). Its versions are dates (2026.11.1), compared like any others.
+func checkCloudflared(m Manifest) ([]Artifact, error) {
+	r, err := latest("cloudflare/cloudflared")
+	if err != nil || r.Prerelease {
+		return nil, err
+	}
+	v := r.TagName
+	if known(m, "cloudflared", v) {
+		return nil, nil
+	}
+	var out []Artifact
+	for arch := range goArch {
+		url, s, err := fromDigest(r, "cloudflared-darwin-"+arch+".tgz")
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, Artifact{Component: "cloudflared", Version: v, Arch: arch, URL: url, SHA256: s.sha256, Files: []string{"cloudflared"}})
 	}
 	return out, nil
 }
