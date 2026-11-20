@@ -1,6 +1,6 @@
 {
-  "serial": 2026111900,
-  "expires": "2026-12-03T14:26:31Z",
+  "serial": 2026112000,
+  "expires": "2026-12-04T14:00:26Z",
   "artifacts": [
     {
       "component": "php",
@@ -688,6 +688,35 @@
       "sha256": "5e0403b188dfee71fbd9b995e7dc9910d61b661c52371935ab6475d41185632f",
       "files": [
         "cloudflared"
+      ]
+    },
+    {
+      "component": "wordpress",
+      "version": "7.1.5",
+      "arch": "all",
+      "url": "https://wordpress.org/wordpress-7.1.5.tar.gz",
+      "sha256": "053857d980eaee8702c617c685948becb9be2523ba0dcbc98e4dbb2300367c79",
+      "strip": "wordpress",
+      "files": [
+        "index.php",
+        "license.txt",
+        "readme.html",
+        "wp-activate.php",
+        "wp-blog-header.php",
+        "wp-comments-post.php",
+        "wp-config-sample.php",
+        "wp-cron.php",
+        "wp-links-opml.php",
+        "wp-load.php",
+        "wp-login.php",
+        "wp-mail.php",
+        "wp-settings.php",
+        "wp-signup.php",
+        "wp-trackback.php",
+        "xmlrpc.php",
+        "wp-admin/",
+        "wp-content/",
+        "wp-includes/"
       ]
     }
   ]
