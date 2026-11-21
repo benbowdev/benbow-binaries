@@ -1,6 +1,6 @@
 {
-  "serial": 2026112000,
-  "expires": "2026-12-04T14:00:26Z",
+  "serial": 2026112100,
+  "expires": "2026-12-05T13:28:11Z",
   "artifacts": [
     {
       "component": "php",
@@ -717,6 +717,28 @@
         "wp-admin/",
         "wp-content/",
         "wp-includes/"
+      ]
+    },
+    {
+      "component": "adminer",
+      "version": "6.3.1",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/vrana/adminer/releases/download/v6.3.1/adminer-6.3.1-mysql.php",
+      "sha256": "97fdb49c3e941636fe4b0559b2b042de3ac105dff0daafec3c255cd6bd81d4b6",
+      "files": [
+        "adminer.php"
+      ]
+    },
+    {
+      "component": "adminer-full",
+      "version": "6.3.1",
+      "arch": "all",
+      "format": "file",
+      "url": "https://github.com/vrana/adminer/releases/download/v6.3.1/adminer-6.3.1.php",
+      "sha256": "a9aed04e4e68c4e46283804a69ee70cad4fbf23203b46470b760868b2fd9bd76",
+      "files": [
+        "adminer.php"
       ]
     }
   ]
