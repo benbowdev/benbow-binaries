@@ -1,6 +1,6 @@
 {
-  "serial": 2026112100,
-  "expires": "2026-12-05T13:28:11Z",
+  "serial": 2026112300,
+  "expires": "2026-12-07T15:58:02Z",
   "artifacts": [
     {
       "component": "php",
@@ -739,6 +739,26 @@
       "sha256": "a9aed04e4e68c4e46283804a69ee70cad4fbf23203b46470b760868b2fd9bd76",
       "files": [
         "adminer.php"
+      ]
+    },
+    {
+      "component": "cloudflared",
+      "version": "2026.11.2",
+      "arch": "amd64",
+      "url": "https://github.com/cloudflare/cloudflared/releases/download/2026.11.2/cloudflared-darwin-amd64.tgz",
+      "sha256": "6153d9ec629174882a3adbff2f7dc5a24b4f3bdd7ccc38eaa84fba26eb890311",
+      "files": [
+        "cloudflared"
+      ]
+    },
+    {
+      "component": "cloudflared",
+      "version": "2026.11.2",
+      "arch": "arm64",
+      "url": "https://github.com/cloudflare/cloudflared/releases/download/2026.11.2/cloudflared-darwin-arm64.tgz",
+      "sha256": "f6d58eeec91ad1ec5fd1f7e4a587303772929b2625be5d24068033851c36ff55",
+      "files": [
+        "cloudflared"
       ]
     }
   ]
